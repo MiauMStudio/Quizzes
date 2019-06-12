@@ -1,2 +1,2 @@
 # QuizzesGame
-This is a quizzes game demo made using Swift and Sprit
+This is a quizzes game demo made by using Swift and Sprit
