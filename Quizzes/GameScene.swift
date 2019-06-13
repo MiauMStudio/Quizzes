@@ -17,10 +17,22 @@ class GameScene: SKScene {
     
     var answeredQuestions: [Question] = []
     
-    let level = Level1()
+    var level: Level
     
-    override init(size: CGSize) {
+    var answeredQuiz = 0
+    
+    init(size: CGSize, levelId: Int) {
         playableRect = CGRect(x: 20, y: size.height/8, width: size.width - 40, height: size.height*3/4)
+        
+        switch levelId {
+        case 1:
+            level = Level1()
+        case 2:
+            level = Level2()
+        default:
+            fatalError("Level doesn't exist.")
+        }
+        
         super.init(size: size)
         
     }
@@ -30,6 +42,7 @@ class GameScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
+        print(size)
         backgroundColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
         
         recursiveQuiz()
@@ -53,9 +66,15 @@ class GameScene: SKScene {
     }
     
     func recursiveQuiz() {
+        if level.questions.count == 0 {
+            let scene = GameOverScene(size: size)
+            scene.scaleMode = scaleMode
+            let transition = SKTransition.crossFade(withDuration: 0.3)
+            view?.presentScene(scene, transition: transition)
+        }
         
         removeAllChildren()
-        
+
         if let quiz = level.questions.popLast() {
             // set question label
             questionLabel = SKLabelNode(text: quiz.question)
@@ -83,6 +102,8 @@ class GameScene: SKScene {
                 } else {
                     answerLabel.name = "wrong"
                 }
+                
+                answeredQuiz += 1
             }
         }
     }
