@@ -66,9 +66,11 @@ class GameScene: SKScene {
     }
     
     func recursiveQuiz() {
-        
-        guard level.questions.count != 0 else {
-            return
+        if level.questions.count == 0 {
+            let scene = GameScene(size: size)
+            scene.scaleMode = scaleMode
+            let transition = SKTransition.crossFade(withDuration: 0.3)
+            view?.presentScene(scene, transition: transition)
         }
         
         removeAllChildren()
