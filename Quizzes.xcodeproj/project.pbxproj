@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		46942DD722B1E935001D233F /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46942DD622B1E935001D233F /* Test.swift */; };
 		46D5666F22B185AC001A615D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D5666E22B185AC001A615D /* AppDelegate.swift */; };
 		46D5667522B185AC001A615D /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D5667422B185AC001A615D /* GameScene.swift */; };
 		46D5667722B185AC001A615D /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46D5667622B185AC001A615D /* GameViewController.swift */; };
@@ -19,7 +18,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		46942DD622B1E935001D233F /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 		46D5666B22B185AC001A615D /* Quizzes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Quizzes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		46D5666E22B185AC001A615D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		46D5667422B185AC001A615D /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -66,7 +64,6 @@
 				46D5667622B185AC001A615D /* GameViewController.swift */,
 				46D5667422B185AC001A615D /* GameScene.swift */,
 				46D5668622B1A86F001A615D /* Question.swift */,
-				46942DD622B1E935001D233F /* Test.swift */,
 				46D5668A22B1ADD3001A615D /* Levels */,
 				46D5667822B185AC001A615D /* Main.storyboard */,
 				46D5667B22B185AD001A615D /* Assets.xcassets */,
@@ -160,7 +157,6 @@
 				46D5668722B1A86F001A615D /* Question.swift in Sources */,
 				46D5667722B185AC001A615D /* GameViewController.swift in Sources */,
 				46D5666F22B185AC001A615D /* AppDelegate.swift in Sources */,
-				46942DD722B1E935001D233F /* Test.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
