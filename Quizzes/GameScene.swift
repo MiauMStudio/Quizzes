@@ -20,6 +20,8 @@ class GameScene: SKScene {
     var level: Level
     
     var answeredQuiz = 0
+    var score = 0
+    var scoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
     
     init(size: CGSize, levelId: Int) {
         playableRect = CGRect(x: 20, y: size.height/8, width: size.width - 40, height: size.height*3/4)
@@ -45,7 +47,18 @@ class GameScene: SKScene {
         print(size)
         backgroundColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
         
+        setupScoreLabel()
         recursiveQuiz()
+    }
+    
+    func setupScoreLabel() {
+        scoreLabel.zPosition = 100
+        scoreLabel.position = CGPoint(
+            x: playableRect.midX,
+            y: playableRect.maxY + 30)
+        scoreLabel.text = "Score: \(score)"
+        scoreLabel.name = "scoreLabel"
+        addChild(scoreLabel)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -56,30 +69,44 @@ class GameScene: SKScene {
         let touchPosition = touch.location(in: self)
         
         let node = nodes(at: touchPosition)[0]
+        
         if node.name == "right" {
             recursiveQuiz()
+            score += 10
+            scoreLabel.text = "Score: \(score)"
         }
         
         if node.name == "wrong" {
             recursiveQuiz()
+            scoreLabel.text = "Score: \(score)"
         }
     }
     
     func recursiveQuiz() {
+        
         if level.questions.count == 0 {
-            let scene = GameOverScene(size: size)
-            scene.scaleMode = scaleMode
-            let transition = SKTransition.crossFade(withDuration: 0.3)
-            view?.presentScene(scene, transition: transition)
+            run(SKAction.sequence([SKAction.wait(forDuration: 0.3),
+                                   SKAction.run { [unowned self] in
+                                    let scene = GameOverScene(size: self.size)
+                                    scene.scaleMode = self.scaleMode
+                                    let transition = SKTransition.crossFade(withDuration: 0.3)
+                                    self.view?.presentScene(scene, transition: transition)}
+                ]))
         }
         
-        removeAllChildren()
-
+        for child in children {
+            if child.name != "scoreLabel" {
+                child.removeFromParent()
+            }
+        }
+    
         if let quiz = level.questions.popLast() {
             // set question label
             questionLabel = SKLabelNode(text: quiz.question)
             questionLabel?.verticalAlignmentMode = .top
             questionLabel?.position = CGPoint(x: size.width/2, y: playableRect.maxY)
+            questionLabel?.fontName = "Arial-BoldMT"
+            questionLabel?.name = "question"
             addChild(questionLabel!)
             
             // set answer labels
@@ -95,6 +122,7 @@ class GameScene: SKScene {
                 answerLabel.position = CGPoint(
                     x: size.width/2,
                     y: playableRect.maxY/CGFloat(count+1)*CGFloat(i))
+                answerLabel.name = "answer"
                 addChild(answerLabel)
                 
                 if answer == quiz.rigntAnswer {
