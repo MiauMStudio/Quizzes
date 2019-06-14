@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		46B0384922B42BB30009E390 /* HUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B0384822B42BB30009E390 /* HUD.swift */; };
 		46B158E022B2E96F00B5A42F /* Level2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B158DF22B2E96F00B5A42F /* Level2.swift */; };
 		46B158E422B2F7A200B5A42F /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B158E322B2F7A200B5A42F /* GameOverScene.swift */; };
 		46B94AFC22B2A74600112CE8 /* LevelsScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 46B94AFB22B2A74600112CE8 /* LevelsScene.sks */; };
@@ -23,7 +22,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		46B0384822B42BB30009E390 /* HUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUD.swift; sourceTree = "<group>"; };
 		46B158DF22B2E96F00B5A42F /* Level2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level2.swift; sourceTree = "<group>"; };
 		46B158E322B2F7A200B5A42F /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		46B94AFB22B2A74600112CE8 /* LevelsScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LevelsScene.sks; sourceTree = "<group>"; };
@@ -75,7 +73,6 @@
 				46B94AFB22B2A74600112CE8 /* LevelsScene.sks */,
 				46B94AFD22B2A77100112CE8 /* LevelsScene.swift */,
 				46D5667422B185AC001A615D /* GameScene.swift */,
-				46B0384822B42BB30009E390 /* HUD.swift */,
 				46B158E322B2F7A200B5A42F /* GameOverScene.swift */,
 				46D5668622B1A86F001A615D /* Question.swift */,
 				46D5668A22B1ADD3001A615D /* Levels */,
@@ -174,7 +171,6 @@
 				46D5667522B185AC001A615D /* GameScene.swift in Sources */,
 				46D5668722B1A86F001A615D /* Question.swift in Sources */,
 				46D5667722B185AC001A615D /* GameViewController.swift in Sources */,
-				46B0384922B42BB30009E390 /* HUD.swift in Sources */,
 				46B158E022B2E96F00B5A42F /* Level2.swift in Sources */,
 				46D5666F22B185AC001A615D /* AppDelegate.swift in Sources */,
 			);
