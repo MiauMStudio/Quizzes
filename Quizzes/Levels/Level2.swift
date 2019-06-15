@@ -18,7 +18,7 @@ class Level2: Level {
         let answer1_2 = "100"
         let answer1_3 = "11"
         
-        let quiz1 = Question(question: question1, answers: [answer1_1, answer1_2, answer1_3], rightAnswer: answer1_1)
+        let quiz1 = Question(question: question1, answers: [answer1_1, answer1_2, answer1_3], rightAnswer: answer1_2)
         
         questions.append(quiz1)
         
@@ -26,7 +26,7 @@ class Level2: Level {
         let answer2_1 = "7"
         let answer2_2 = "8"
         let answer2_3 = "10"
-        let quiz2 = Question(question: question2, answers: [answer2_1, answer2_2, answer2_3], rightAnswer: answer2_2)
+        let quiz2 = Question(question: question2, answers: [answer2_1, answer2_2, answer2_3], rightAnswer: answer2_3)
         
         questions.append(quiz2)
     }
