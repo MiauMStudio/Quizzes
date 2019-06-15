@@ -13,6 +13,7 @@ class GameScene: SKScene {
     
     var questionLabel: SKLabelNode?
     var answerLabels: [SKLabelNode] = []
+    
     let playableRect: CGRect
     
     var answeredQuestions: [Question] = []
@@ -49,6 +50,7 @@ class GameScene: SKScene {
         
         setupScoreLabel()
         recursiveQuiz()
+        addBackButton()
     }
     
     func setupScoreLabel() {
@@ -61,31 +63,65 @@ class GameScene: SKScene {
         addChild(scoreLabel)
     }
     
+    func addBackButton() {
+        let backLabel = SKLabelNode(text: "Back to main menu")
+        backLabel.verticalAlignmentMode = .center
+        backLabel.name = "back"
+        let cgSize = backLabel.frame.size
+        let backButton = SKShapeNode(rectOf: CGSize(
+            width: cgSize.width + 15,
+            height: cgSize.height + 5), cornerRadius: 20)
+        backButton.position = CGPoint(x: playableRect.midX,
+                                      y: playableRect.minY)
+        backButton.fillColor = .orange
+        backButton.strokeColor = .red
+        backButton.name = "back"
+        addChild(backButton)
+        backButton.addChild(backLabel)
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let touch = touches.first else {
             return
         }
         
         let touchPosition = touch.location(in: self)
-        
         guard let node = nodes(at: touchPosition).first else { return }
         
-        if node.name == "right" {
+//        if node.name == "right" {
+//            recursiveQuiz()
+//            score += 10
+//            scoreLabel.text = "Score: \(score)"
+//        }
+//
+//        if node.name == "wrong" {
+//            recursiveQuiz()
+//            scoreLabel.text = "Score: \(score)"
+//        }
+        
+        switch node.name {
+        case "right":
             recursiveQuiz()
             score += 10
             scoreLabel.text = "Score: \(score)"
-        }
-        
-        if node.name == "wrong" {
+        case "wrong":
             recursiveQuiz()
             scoreLabel.text = "Score: \(score)"
+        case "back":
+            print("Back button pressed.")
+            if let scene = SKScene(fileNamed: "LevelsScene") {
+                let reveal = SKTransition.crossFade(withDuration: 0.3)
+                view?.presentScene(scene, transition: reveal)
+            }
+        default:
+            return
         }
     }
     
     func recursiveQuiz() {
         
         if level.questions.count == 0 {
-            run(SKAction.sequence([SKAction.wait(forDuration: 3),
+            run(SKAction.sequence([SKAction.wait(forDuration: 0.3),
                                    SKAction.run { [unowned self] in
                                     let scene = GameOverScene(size: self.size)
                                     scene.scaleMode = self.scaleMode
@@ -95,7 +131,7 @@ class GameScene: SKScene {
         }
         
         for child in children {
-            if child.name != "scoreLabel" {
+            if child.name != "scoreLabel" && child.name != "back" {
                 child.removeFromParent()
             }
         }
