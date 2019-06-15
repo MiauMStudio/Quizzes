@@ -68,7 +68,7 @@ class GameScene: SKScene {
         
         let touchPosition = touch.location(in: self)
         
-        let node = nodes(at: touchPosition)[0]
+        guard let node = nodes(at: touchPosition).first else { return }
         
         if node.name == "right" {
             recursiveQuiz()
@@ -85,7 +85,7 @@ class GameScene: SKScene {
     func recursiveQuiz() {
         
         if level.questions.count == 0 {
-            run(SKAction.sequence([SKAction.wait(forDuration: 0.3),
+            run(SKAction.sequence([SKAction.wait(forDuration: 3),
                                    SKAction.run { [unowned self] in
                                     let scene = GameOverScene(size: self.size)
                                     scene.scaleMode = self.scaleMode
@@ -99,7 +99,8 @@ class GameScene: SKScene {
                 child.removeFromParent()
             }
         }
-    
+        guard level.questions.count > 0 else { return }
+        
         if let quiz = level.questions.popLast() {
             // set question label
             questionLabel = SKLabelNode(text: quiz.question)
