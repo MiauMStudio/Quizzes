@@ -108,7 +108,6 @@ class GameScene: SKScene {
             recursiveQuiz()
             scoreLabel.text = "Score: \(score)"
         case "back":
-            print("Back button pressed.")
             if let scene = SKScene(fileNamed: "LevelsScene") {
                 let reveal = SKTransition.crossFade(withDuration: 0.3)
                 view?.presentScene(scene, transition: reveal)
@@ -123,7 +122,7 @@ class GameScene: SKScene {
         if level.questions.count == 0 {
             run(SKAction.sequence([SKAction.wait(forDuration: 0.3),
                                    SKAction.run { [unowned self] in
-                                    let scene = GameOverScene(size: self.size)
+                                    let scene = GameOverScene(score: self.score, size: self.size)
                                     scene.scaleMode = self.scaleMode
                                     let transition = SKTransition.crossFade(withDuration: 0.3)
                                     self.view?.presentScene(scene, transition: transition)}
