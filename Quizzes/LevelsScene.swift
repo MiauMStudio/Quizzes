@@ -108,6 +108,7 @@ class LevelsScene: SKScene {
         messageLabel.numberOfLines = 0
         messageLabel.fontSize = 30
         messageLabel.position = .zero
+        messageLabel.zPosition = 200
         addChild(messageLabel)
         
         messageLabel.run(SKAction.sequence([

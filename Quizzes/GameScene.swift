@@ -91,25 +91,32 @@ class GameScene: SKScene {
         let touchPosition = touch.location(in: self)
         guard let node = nodes(at: touchPosition).first else { return }
         
-//        if node.name == "right" {
-//            recursiveQuiz()
-//            score += 10
-//            scoreLabel.text = "Score: \(score)"
-//        }
-//
-//        if node.name == "wrong" {
-//            recursiveQuiz()
-//            scoreLabel.text = "Score: \(score)"
-//        }
-        
         switch node.name {
         case "right":
-            recursiveQuiz()
             score += 10
             scoreLabel.text = "Score: \(score)"
+            let rect = CGRect(x: 0, y: 0, width: playableRect.width, height: node.frame.height)
+            let greenRect = SKShapeNode(rectOf: rect.size)
+            greenRect.position.y = node.position.y + node.frame.height/2
+            greenRect.position.x = node.position.x
+            greenRect.strokeColor = .green
+            addChild(greenRect)
+            let action = SKAction.run(recursiveQuiz)
+            greenRect.run(SKAction.sequence([
+                SKAction.wait(forDuration: 1.2),
+                SKAction.removeFromParent(), action]))
         case "wrong":
-            recursiveQuiz()
             scoreLabel.text = "Score: \(score)"
+            let rect = CGRect(x: 0, y: 0, width: playableRect.width, height: node.frame.height)
+            let greenRect = SKShapeNode(rectOf: rect.size)
+            greenRect.position.y = node.position.y + node.frame.height/2
+            greenRect.position.x = node.position.x
+            greenRect.strokeColor = .red
+            addChild(greenRect)
+            let action = SKAction.run(recursiveQuiz)
+            greenRect.run(SKAction.sequence([
+                SKAction.wait(forDuration: 1.2),
+                SKAction.removeFromParent(), action]))
         case "back":
             if let scene = SKScene(fileNamed: "LevelsScene") {
                 let reveal = SKTransition.crossFade(withDuration: 0.3)
