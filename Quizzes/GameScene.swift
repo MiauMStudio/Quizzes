@@ -19,6 +19,7 @@ class GameScene: SKScene {
     var answeredQuestions: [Question] = []
     
     var level: Level
+    var levelId: Int
     
     var answeredQuiz = 0
     var score = 0
@@ -26,12 +27,14 @@ class GameScene: SKScene {
     
     init(size: CGSize, levelId: Int) {
         playableRect = CGRect(x: 20, y: size.height/8, width: size.width - 40, height: size.height*3/4)
-        
+        self.levelId = levelId
         switch levelId {
         case 1:
             level = Level1()
         case 2:
             level = Level2()
+        case 3:
+            level = Level3()
         default:
             fatalError("Level doesn't exist.")
         }
@@ -120,6 +123,9 @@ class GameScene: SKScene {
     func recursiveQuiz() {
         
         if level.questions.count == 0 {
+            if levelId < lockLevels.count {
+                lockLevels[levelId] = false
+            }
             run(SKAction.sequence([SKAction.wait(forDuration: 0.3),
                                    SKAction.run { [unowned self] in
                                     let scene = GameOverScene(score: self.score, size: self.size)

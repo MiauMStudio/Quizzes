@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		469E304122B6AD150007D3EA /* Level3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E304022B6AD150007D3EA /* Level3.swift */; };
 		46B158E022B2E96F00B5A42F /* Level2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B158DF22B2E96F00B5A42F /* Level2.swift */; };
 		46B158E422B2F7A200B5A42F /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B158E322B2F7A200B5A42F /* GameOverScene.swift */; };
 		46B94AFC22B2A74600112CE8 /* LevelsScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 46B94AFB22B2A74600112CE8 /* LevelsScene.sks */; };
@@ -22,6 +23,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		469E304022B6AD150007D3EA /* Level3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level3.swift; sourceTree = "<group>"; };
 		46B158DF22B2E96F00B5A42F /* Level2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level2.swift; sourceTree = "<group>"; };
 		46B158E322B2F7A200B5A42F /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		46B94AFB22B2A74600112CE8 /* LevelsScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = LevelsScene.sks; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 			children = (
 				46D5668822B1ADCC001A615D /* Level1.swift */,
 				46B158DF22B2E96F00B5A42F /* Level2.swift */,
+				469E304022B6AD150007D3EA /* Level3.swift */,
 			);
 			path = Levels;
 			sourceTree = "<group>";
@@ -165,6 +168,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				469E304122B6AD150007D3EA /* Level3.swift in Sources */,
 				46D5668922B1ADCC001A615D /* Level1.swift in Sources */,
 				46B94AFE22B2A77100112CE8 /* LevelsScene.swift in Sources */,
 				46B158E422B2F7A200B5A42F /* GameOverScene.swift in Sources */,
