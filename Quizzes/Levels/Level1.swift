@@ -9,10 +9,12 @@
 import Foundation
 
 protocol Level {
+    //static var isLocked: Bool { get set }
     var questions: [Question] { get set }
 }
 
-class Level1: Level {
+struct Level1: Level {
+    //static var isLocked: Bool = false
     
     var questions: [Question] = []
     
@@ -33,5 +35,14 @@ class Level1: Level {
         let quiz2 = Question(question: question2, answers: [answer2_1, answer2_2, answer2_3], rightAnswer: answer2_2)
         
         questions.append(quiz2)
+        
+        let question3 = "2 ^ 3 = ?"
+        let answer3_1 = "9"
+        let answer3_2 = "8"
+        let answer3_3 = "6"
+        let answer3_4 = "5"
+        let quiz3 = Question(question: question3, answers: [answer3_1, answer3_2, answer3_3, answer3_4], rightAnswer: answer3_2)
+        
+        questions.append(quiz3)
     }
 }
