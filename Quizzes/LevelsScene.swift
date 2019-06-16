@@ -103,7 +103,7 @@ class LevelsScene: SKScene {
         let messageLabel = SKLabelNode(fontNamed: "GillSans-Bold")
         messageLabel.text = """
         Pass the previous level
-         to unlock this level.
+          to unlock this level.
         """
         messageLabel.numberOfLines = 0
         messageLabel.fontSize = 30
@@ -111,7 +111,7 @@ class LevelsScene: SKScene {
         addChild(messageLabel)
         
         messageLabel.run(SKAction.sequence([
-            SKAction.wait(forDuration: 2.5),
+            SKAction.wait(forDuration: 2.0),
             SKAction.removeFromParent()]))
     }
 }
