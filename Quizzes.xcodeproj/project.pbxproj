@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		469836E322B7164000CF52BE /* Level4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469836E222B7164000CF52BE /* Level4.swift */; };
+		469836E522B716F200CF52BE /* Level5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469836E422B716F200CF52BE /* Level5.swift */; };
+		469836E722B7176000CF52BE /* Level6.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469836E622B7176000CF52BE /* Level6.swift */; };
 		469E304122B6AD150007D3EA /* Level3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E304022B6AD150007D3EA /* Level3.swift */; };
 		46B158E022B2E96F00B5A42F /* Level2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B158DF22B2E96F00B5A42F /* Level2.swift */; };
 		46B158E422B2F7A200B5A42F /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B158E322B2F7A200B5A42F /* GameOverScene.swift */; };
@@ -23,6 +26,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		469836E222B7164000CF52BE /* Level4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level4.swift; sourceTree = "<group>"; };
+		469836E422B716F200CF52BE /* Level5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level5.swift; sourceTree = "<group>"; };
+		469836E622B7176000CF52BE /* Level6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level6.swift; sourceTree = "<group>"; };
 		469E304022B6AD150007D3EA /* Level3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level3.swift; sourceTree = "<group>"; };
 		46B158DF22B2E96F00B5A42F /* Level2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level2.swift; sourceTree = "<group>"; };
 		46B158E322B2F7A200B5A42F /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
@@ -92,6 +98,9 @@
 				46D5668822B1ADCC001A615D /* Level1.swift */,
 				46B158DF22B2E96F00B5A42F /* Level2.swift */,
 				469E304022B6AD150007D3EA /* Level3.swift */,
+				469836E222B7164000CF52BE /* Level4.swift */,
+				469836E422B716F200CF52BE /* Level5.swift */,
+				469836E622B7176000CF52BE /* Level6.swift */,
 			);
 			path = Levels;
 			sourceTree = "<group>";
@@ -169,12 +178,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				469E304122B6AD150007D3EA /* Level3.swift in Sources */,
+				469836E522B716F200CF52BE /* Level5.swift in Sources */,
 				46D5668922B1ADCC001A615D /* Level1.swift in Sources */,
 				46B94AFE22B2A77100112CE8 /* LevelsScene.swift in Sources */,
 				46B158E422B2F7A200B5A42F /* GameOverScene.swift in Sources */,
 				46D5667522B185AC001A615D /* GameScene.swift in Sources */,
+				469836E322B7164000CF52BE /* Level4.swift in Sources */,
 				46D5668722B1A86F001A615D /* Question.swift in Sources */,
 				46D5667722B185AC001A615D /* GameViewController.swift in Sources */,
+				469836E722B7176000CF52BE /* Level6.swift in Sources */,
 				46B158E022B2E96F00B5A42F /* Level2.swift in Sources */,
 				46D5666F22B185AC001A615D /* AppDelegate.swift in Sources */,
 			);
@@ -323,6 +335,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = HYP6NYCT48;
 				INFOPLIST_FILE = Quizzes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -340,6 +353,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = HYP6NYCT48;
 				INFOPLIST_FILE = Quizzes/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

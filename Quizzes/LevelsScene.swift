@@ -9,7 +9,7 @@
 import Foundation
 import SpriteKit
 
-var lockLevels: [Bool] = [false, true, true]
+var lockLevels: [Bool] = [false, true, true, true, true, true]
 
 class LevelsScene: SKScene {
     
@@ -18,17 +18,23 @@ class LevelsScene: SKScene {
     
     override func didMove(to view: SKView) {
         
-        backgroundColor = #colorLiteral(red: 0.9529411793, green: 0.6862745285, blue: 0.1333333403, alpha: 1)
+        backgroundColor = #colorLiteral(red: 0.9285206199, green: 0.6720158458, blue: 0.7007293105, alpha: 1)
         
         let levelOneNode = childNode(withName: "levelOne") as! SKSpriteNode
         let levelTwoNode = childNode(withName: "levelTwo") as! SKSpriteNode
         let levelThreeNode = childNode(withName: "levelThree") as! SKSpriteNode
+        let levelFourNode = childNode(withName: "levelFour") as! SKSpriteNode
+        let levelFiveNode = childNode(withName: "levelFive") as! SKSpriteNode
+        let levelSixNode = childNode(withName: "levelSix") as! SKSpriteNode
         
         levelsNode.append(levelOneNode)
         levelsNode.append(levelTwoNode)
         levelsNode.append(levelThreeNode)
+        levelsNode.append(levelFourNode)
+        levelsNode.append(levelFiveNode)
+        levelsNode.append(levelSixNode)
         
-        let yPosition = (levelsNode.first?.position.y)! - 70 + view.frame.height/2
+        let yPosition = (levelsNode.first?.position.y)! - 150 + view.frame.height/2
         camera?.position.y = yPosition
        
         for (index, isLocked) in lockLevels.enumerated() {

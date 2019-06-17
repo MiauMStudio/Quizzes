@@ -35,6 +35,12 @@ class GameScene: SKScene {
             level = Level2()
         case 3:
             level = Level3()
+        case 4:
+            level = Level4()
+        case 5:
+            level = Level5()
+        case 6:
+            level = Level6()
         default:
             fatalError("Level doesn't exist.")
         }
@@ -103,7 +109,7 @@ class GameScene: SKScene {
             addChild(greenRect)
             let action = SKAction.run(recursiveQuiz)
             greenRect.run(SKAction.sequence([
-                SKAction.wait(forDuration: 1.2),
+                SKAction.wait(forDuration: 0.5),
                 SKAction.removeFromParent(), action]))
         case "wrong":
             scoreLabel.text = "Score: \(score)"
@@ -115,7 +121,7 @@ class GameScene: SKScene {
             addChild(greenRect)
             let action = SKAction.run(recursiveQuiz)
             greenRect.run(SKAction.sequence([
-                SKAction.wait(forDuration: 1.2),
+                SKAction.wait(forDuration: 0.5),
                 SKAction.removeFromParent(), action]))
         case "back":
             if let scene = SKScene(fileNamed: "LevelsScene") {
@@ -149,39 +155,39 @@ class GameScene: SKScene {
         }
         guard level.questions.count > 0 else { return }
         
-        if let quiz = level.questions.popLast() {
-            // set question label
-            questionLabel = SKLabelNode(text: quiz.question)
-            questionLabel?.verticalAlignmentMode = .top
-            questionLabel?.position = CGPoint(x: size.width/2, y: playableRect.maxY)
-            questionLabel?.fontName = "Arial-BoldMT"
-            questionLabel?.name = "question"
-            addChild(questionLabel!)
+        let quiz = level.questions.removeFirst()
+        // set question label
+        questionLabel = SKLabelNode(text: quiz.question)
+        questionLabel?.verticalAlignmentMode = .top
+        questionLabel?.position = CGPoint(x: size.width/2, y: playableRect.maxY)
+        questionLabel?.fontName = "Arial-BoldMT"
+        questionLabel?.name = "question"
+        addChild(questionLabel!)
+        
+        // set answer labels
+        let count = quiz.answers.count
+        
+        for i in 1...count {
+            let answer: String = quiz.answers.randomElement()!
             
-            // set answer labels
-            let count = quiz.answers.count
+            let index = quiz.answers.firstIndex(of: answer)
+            quiz.answers.remove(at: index!)
             
-            for i in 1...count {
-                let answer: String = quiz.answers.randomElement()!
-                
-                let index = quiz.answers.firstIndex(of: answer)
-                quiz.answers.remove(at: index!)
-                
-                let answerLabel = SKLabelNode(text: answer)
-                answerLabel.position = CGPoint(
-                    x: size.width/2,
-                    y: playableRect.maxY/CGFloat(count+1)*CGFloat(i))
-                answerLabel.name = "answer"
-                addChild(answerLabel)
-                
-                if answer == quiz.rigntAnswer {
-                    answerLabel.name = "right"
-                } else {
-                    answerLabel.name = "wrong"
-                }
-                
-                answeredQuiz += 1
+            let answerLabel = SKLabelNode(text: answer)
+            answerLabel.position = CGPoint(
+                x: size.width/2,
+                y: playableRect.maxY/CGFloat(count+1)*CGFloat(i))
+            answerLabel.name = "answer"
+            addChild(answerLabel)
+            
+            if answer == quiz.rigntAnswer {
+                answerLabel.name = "right"
+            } else {
+                answerLabel.name = "wrong"
             }
+            
+            answeredQuiz += 1
         }
+        
     }
 }
