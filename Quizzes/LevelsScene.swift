@@ -107,14 +107,19 @@ class LevelsScene: SKScene {
     
     func animateLockedMessage() {
         let messageLabel = SKLabelNode(fontNamed: "GillSans-Bold")
-        messageLabel.text = """
-        Pass the previous level
-          to unlock this level.
-        """
+//        messageLabel.text = """
+//        Pass the previous level
+//          to unlock this level.
+//        """
+        messageLabel.text = "Pass the previous level to unlock this level."
+        messageLabel.horizontalAlignmentMode = .center
+        messageLabel.verticalAlignmentMode = .center
         messageLabel.numberOfLines = 0
         messageLabel.fontSize = 30
-        messageLabel.position = .zero
+        messageLabel.position = camera!.position
         messageLabel.zPosition = 200
+        messageLabel.lineBreakMode = .byWordWrapping
+        messageLabel.preferredMaxLayoutWidth = (view?.frame.width)! - 40
         addChild(messageLabel)
         
         messageLabel.run(SKAction.sequence([
