@@ -151,7 +151,7 @@ class GameScene: SKScene {
 //                print(questionLabel?.text)
 //            }
         case "next":
-            animiteAnswer(right: true, node: node, touchPosition: touchLocation)
+            run(SKAction.sequence([SKAction.wait(forDuration: 0.5), SKAction.run(recursiveQuiz)]))
         default:
             return
         }
@@ -266,9 +266,6 @@ class GameScene: SKScene {
             quiz.answers.remove(at: index!)
             
             let answerLabel = SKLabelNode(text: answer)
-//            answerLabel.position = CGPoint(
-//                x: 0,
-//                y: (playableRect!.height - questionLabel!.frame.size.height)/CGFloat(count+1)*CGFloat(i) - (playableRect!.height-questionLabel!.frame.size.height)/2)
             answerLabel.position = CGPoint(
                 x: 0,
                 y: ((questionLabel?.position.y)! - (questionLabel?.frame.height)!) - CGFloat(i * 60))
@@ -280,7 +277,15 @@ class GameScene: SKScene {
             } else if quiz.rigntAnswer != nil {
                 answerLabel.name = "wrong"
             } else if quiz.rigntAnswer == nil {
-                answerLabel.name = "next"
+                let labelFrame = SKShapeNode(rectOf: CGSize(
+                    width: answerLabel.frame.width + 20,
+                    height: answerLabel.frame.height + 10), cornerRadius: 15)
+                labelFrame.strokeColor = .green
+                labelFrame.lineWidth = 3
+                labelFrame.position = .zero
+                labelFrame.position.y = answerLabel.frame.height/2
+                labelFrame.name = "next"
+                answerLabel.addChild(labelFrame)
             }
             
             answeredQuiz += 1
