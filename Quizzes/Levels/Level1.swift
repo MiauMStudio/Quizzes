@@ -19,12 +19,12 @@ struct Level1: Level {
     var questions: [Question] = []
     
     init() {
-        let question1 = "1 + 1 = ?"
-        let answer1_1 = "2"
+        let question1 = "模拟教学内容"
+        let answer1_1 = "Got it！"
 //        let answer1_2 = "0"
 //        let answer1_3 = "11"
         
-        let quiz1 = Question(question: question1, answers: [answer1_1], rightAnswer: answer1_1)
+        let quiz1 = Question(question: question1, answers: [answer1_1])
         
         questions.append(quiz1)
         

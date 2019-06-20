@@ -150,6 +150,8 @@ class GameScene: SKScene {
 //                view?.presentScene(scene, transition: reveal)
 //                print(questionLabel?.text)
 //            }
+        case "next":
+            animiteAnswer(right: true, node: node, touchPosition: touchLocation)
         default:
             return
         }
@@ -239,6 +241,10 @@ class GameScene: SKScene {
         
         let quiz = level.questions.removeFirst()
         
+        if quiz.answers.count == 1 {
+            scoreLabel.isHidden = true
+        } else { scoreLabel.isHidden = false }
+        
         // set question label
         questionLabel = SKLabelNode(text: quiz.question)
         questionLabel?.verticalAlignmentMode = .top
@@ -271,8 +277,10 @@ class GameScene: SKScene {
             
             if answer == quiz.rigntAnswer {
                 answerLabel.name = "right"
-            } else {
+            } else if quiz.rigntAnswer != nil {
                 answerLabel.name = "wrong"
+            } else if quiz.rigntAnswer == nil {
+                answerLabel.name = "next"
             }
             
             answeredQuiz += 1
