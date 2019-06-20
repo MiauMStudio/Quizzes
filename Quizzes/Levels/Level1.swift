@@ -28,7 +28,7 @@ struct Level1: Level {
         
         questions.append(quiz1)
         
-        let question2 = "gtrrth54gj gregh5r fsgerg4 srgbe5g rgs4eg rsg4eg sef4gb5kl segrb sr4gtb gtrrth54gj gregh5r fsgerg4 srgbe5g rgs4eg rsg4eg sef4gb5kl segrb sr4gtb gtrrth54gj gregh5r fsgerg4 srgbe5g rgs4eg rsg4eg sef4gb5kl segrb sr4gtb gtrrth54gj gregh5r fsgerg4 srgbe5g rgs4eg rsg4eg sef4gb5kl segrb sr4gtb gtrrth54gj gregh5r fsgerg4 srgbe5g rgs4eg rsg4eg sef4gb5kl segrb sr4gtb gtrrth54gj gregh5r fsgerg4 srgbe5g rgs4eg rsg4eg sef4gb5kl segrb sr4gtb gtrrth54gj gregh5r fsgerg4 srgbe5g rgs4eg rsg4eg sef4gb5kl segrb sr4gtb"
+        let question2 = " iOS 7新引入的Sprite Kit类库算是给iOS游戏开发者带来一些福音吧，由于 ..... 首先是坐标系，游戏开发中必须要注意的，如果一个游戏开发者连坐标系都 ...... 渲染出来， cropNode自动在其子node上以maskNode的边框裁剪子node的 .2014年3月5日 - 为你的游戏添加粒子系统很简单，XCode中new file时找到resource，可以看到SpriteKit Particle File这一项，XCode自带粒子系统文件而且可以直接 ..."
         let answer2_1 = "7"
         let answer2_2 = "8"
         let answer2_3 = "2222"

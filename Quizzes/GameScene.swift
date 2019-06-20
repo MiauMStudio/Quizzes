@@ -15,6 +15,8 @@ class GameScene: SKScene {
     var answerLabels: [SKLabelNode] = []
     
     var playableRect: CGRect?
+    var playableArea: SKSpriteNode?
+    let cropNode: SKCropNode = SKCropNode()
     
     var answeredQuestions: [Question] = []
     
@@ -24,8 +26,12 @@ class GameScene: SKScene {
     var answeredQuiz = 0
     var score = 0
     var scoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
+
+    var backButton: SKShapeNode = SKShapeNode()
     
-    var playableArea: SKShapeNode?
+    let quizNode = SKNode()
+    
+    var startPositionY: CGFloat = 0
     
     init(size: CGSize, levelId: Int) {
 //        playableRect = CGRect(x: 20, y: (view?.frame.size.height)!/8 + 50, width: view!.frame.size.width - 40, height: view!.frame.size.height*3/4)
@@ -57,43 +63,56 @@ class GameScene: SKScene {
     }
     
     override func didMove(to view: SKView) {
-        playableRect = CGRect(x: 10, y: (view.frame.size.height)/8, width: view.frame.size.width - 20, height: view.frame.size.height*3/4)
         
-        print(size)
-        backgroundColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
-        
-        playableArea = SKShapeNode(rect: playableRect!)
-        playableArea!.strokeColor = .blue
-        playableArea!.lineWidth = 3
-        
-        playableArea!.zPosition = 10
-        addChild(playableArea!)
-        
+        setupCropNode(view: view)
         setupScoreLabel()
         recursiveQuiz()
         addBackButton()
+    }
+    
+    func setupCropNode(view: SKView) {
+        playableRect = CGRect(x: 0, y: 0, width: view.frame.width - 20, height: view.frame.height*3/4)
+        let playableSize = CGSize(
+            width: view.frame.width - 20,
+            height: view.frame.height*3/4)
+        backgroundColor = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
+        
+        playableArea = SKSpriteNode(color: .white, size: playableSize)
+        playableArea?.position = .zero
+        playableArea?.alpha = 1
+        cropNode.maskNode = playableArea
+        addChild(cropNode)
+        cropNode.position = view.center
+        //
+        //        let bg = SKSpriteNode(imageNamed: "BG")
+        //        bg.zPosition = -1
+        //        cropNode.addChild(bg)
+        quizNode.position = .zero
+        cropNode.addChild(quizNode)
     }
     
     func setupScoreLabel() {
         scoreLabel.zPosition = 100
         scoreLabel.position = CGPoint(
             x: playableRect!.midX,
-            y: playableRect!.maxY + 30)
+            y: playableRect!.maxY + view!.frame.height/8 + 30)
         scoreLabel.text = "Score: \(score)"
         scoreLabel.name = "scoreLabel"
         addChild(scoreLabel)
     }
     
     func addBackButton() {
+        
         let backLabel = SKLabelNode(text: "Back to main menu")
         backLabel.verticalAlignmentMode = .center
         backLabel.name = "back"
         let cgSize = backLabel.frame.size
-        let backButton = SKShapeNode(rectOf: CGSize(
+        backButton = SKShapeNode(rectOf: CGSize(
             width: cgSize.width + 15,
             height: cgSize.height + 5), cornerRadius: 20)
-        backButton.position = CGPoint(x: playableRect!.midX,
-                                      y: playableRect!.minY - 30)
+        backButton.position = CGPoint(
+            x: playableRect!.midX,
+            y: view!.frame.height/16)
         backButton.fillColor = .orange
         backButton.strokeColor = .red
         backButton.name = "back"
@@ -107,45 +126,99 @@ class GameScene: SKScene {
         }
         
         let touchPosition = touch.location(in: self)
+        
         guard let node = nodes(at: touchPosition).first else { return }
         
-        switch node.name {
-        case "right":
-            score += 10
-            scoreLabel.text = "Score: \(score)"
-            let rect = CGRect(x: 0, y: 0, width: playableRect!.width, height: node.frame.height)
-            let greenRect = SKShapeNode(rectOf: rect.size)
-            greenRect.position.y = node.position.y + node.frame.height/2
-            greenRect.position.x = node.position.x
-            greenRect.strokeColor = .green
-            addChild(greenRect)
-            let action = SKAction.run(recursiveQuiz)
-            greenRect.run(SKAction.sequence([
-                SKAction.wait(forDuration: 0.5),
-                SKAction.removeFromParent(), action]))
-        case "wrong":
-            scoreLabel.text = "Score: \(score)"
-            let rect = CGRect(x: 0, y: 0, width: playableRect!.width, height: node.frame.height)
-            let greenRect = SKShapeNode(rectOf: rect.size)
-            greenRect.position.y = node.position.y + node.frame.height/2
-            greenRect.position.x = node.position.x
-            greenRect.strokeColor = .red
-            addChild(greenRect)
-            let action = SKAction.run(recursiveQuiz)
-            greenRect.run(SKAction.sequence([
-                SKAction.wait(forDuration: 0.5),
-                SKAction.removeFromParent(), action]))
-        case "back":
+        if backButton.contains(touchPosition) {
             if let scene = SKScene(fileNamed: "LevelsScene") {
                 let reveal = SKTransition.crossFade(withDuration: 0.3)
                 view?.presentScene(scene, transition: reveal)
             }
+        }
+        
+        let touchLocation = touch.location(in: cropNode)
+        
+        switch node.name {
+        case "right":
+            score += 10
+            animiteAnswer(right: true, node: node, touchPosition: touchLocation)
+        case "wrong":
+            animiteAnswer(right: false, node: node, touchPosition: touchLocation)
+//        case "back":
+//            if let scene = SKScene(fileNamed: "LevelsScene") {
+//                let reveal = SKTransition.crossFade(withDuration: 0.3)
+//                view?.presentScene(scene, transition: reveal)
+//                print(questionLabel?.text)
+//            }
         default:
             return
         }
     }
     
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        print(quizNode.calculateAccumulatedFrame().height)
+        guard let touch = touches.first else {
+            return
+        }
+        let touchPosition = touch.location(in: playableArea!)
+        
+//        guard quizNode.position.y - quizNode.calculateAccumulatedFrame().height/2 < 30 else { return }
+//        guard quizNode.position.y + quizNode.calculateAccumulatedFrame().height/2 > 30 else {
+//            return
+        //        }
+        
+        guard (playableArea?.contains(touchPosition))! else { return }
+        
+        if startPositionY == 0 {
+            startPositionY = touchPosition.y
+        }
+        
+        guard startPositionY != touchPosition.y else { return }
+        let yDistance = touchPosition.y - startPositionY
+        
+        quizNode.position.y += yDistance
+        
+        let upperLimit = max(0, quizNode.calculateAccumulatedFrame().height - playableArea!.frame.height)
+        let yRange = SKRange(
+            lowerLimit: 0,
+            upperLimit: upperLimit)
+        let yConstraint = SKConstraint.positionY(yRange)
+        quizNode.constraints = [yConstraint]
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        startPositionY = 0
+    }
+    
+    func animiteAnswer(right: Bool, node: SKNode, touchPosition: CGPoint) {
+        scoreLabel.text = "Score: \(score)"
+        let rect = CGRect(x: 0, y: 0, width: playableRect!.width, height: node.frame.height)
+        let colorRect = SKShapeNode(rectOf: rect.size)
+        colorRect.position = node.position
+        colorRect.position.y = node.position.y + node.frame.height/2
+        if right {
+            colorRect.strokeColor = .green
+        } else {
+            colorRect.strokeColor = .red
+        }
+        quizNode.addChild(colorRect)
+        let action = SKAction.run(recursiveQuiz)
+        colorRect.run(SKAction.sequence([
+            SKAction.wait(forDuration: 0.5),
+            SKAction.removeFromParent(), action]))
+    }
+    
     func recursiveQuiz() {
+//        print("playable area height: \(playableArea?.frame.height)")
+//        if quizNode.calculateAccumulatedFrame().height <= (playableArea?.frame.height)! {
+//            quizNode.position = CGPoint(x: 0,
+//                                        y: -(playableArea?.frame.height)!/2)
+//
+//        } else {
+//            quizNode.position.y = -quizNode.calculateAccumulatedFrame().height/2
+//        }
+        
+        quizNode.position = .zero
         
         if level.questions.count == 0 {
             if levelId < lockLevels.count {
@@ -160,7 +233,7 @@ class GameScene: SKScene {
                 ]))
         }
         
-        playableArea?.removeAllChildren()
+        quizNode.removeAllChildren()
         
         guard level.questions.count > 0 else { return }
         
@@ -169,14 +242,14 @@ class GameScene: SKScene {
         // set question label
         questionLabel = SKLabelNode(text: quiz.question)
         questionLabel?.verticalAlignmentMode = .top
-        questionLabel?.position = CGPoint(x: size.width/2, y: playableRect!.maxY)
+        questionLabel?.position = CGPoint(x: 0, y: playableRect!.height/2)
         questionLabel?.fontName = "Arial-BoldMT"
         questionLabel?.name = "question"
         questionLabel?.numberOfLines = 0
         questionLabel?.lineBreakMode = .byWordWrapping
         questionLabel?.preferredMaxLayoutWidth = playableArea!.frame.width
         
-        playableArea!.addChild(questionLabel!)
+        quizNode.addChild(questionLabel!)
         // set answer labels
         let count = quiz.answers.count
         
@@ -187,11 +260,14 @@ class GameScene: SKScene {
             quiz.answers.remove(at: index!)
             
             let answerLabel = SKLabelNode(text: answer)
+//            answerLabel.position = CGPoint(
+//                x: 0,
+//                y: (playableRect!.height - questionLabel!.frame.size.height)/CGFloat(count+1)*CGFloat(i) - (playableRect!.height-questionLabel!.frame.size.height)/2)
             answerLabel.position = CGPoint(
-                x: size.width/2,
-                y: (playableRect!.maxY - questionLabel!.frame.size.height)/CGFloat(count+1)*CGFloat(i))
+                x: 0,
+                y: ((questionLabel?.position.y)! - (questionLabel?.frame.height)!) - CGFloat(i * 60))
             answerLabel.name = "answer"
-            playableArea?.addChild(answerLabel)
+            quizNode.addChild(answerLabel)
             
             if answer == quiz.rigntAnswer {
                 answerLabel.name = "right"
