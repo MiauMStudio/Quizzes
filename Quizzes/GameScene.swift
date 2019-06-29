@@ -11,7 +11,11 @@ import GameplayKit
 
 class GameScene: SKScene {
     
-    var pagesNum: Int = 0
+    var pagesNum: Int = 0 {
+        willSet {
+            pageLabel.text = "Page: \(newValue)"
+        }
+    }
     var questionLabel: SKLabelNode?
     var answerLabels: [SKLabelNode] = []
     
@@ -25,8 +29,7 @@ class GameScene: SKScene {
     var levelId: Int
     
     var answeredQuiz = 0
-    var score = 0
-    var scoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
+    var pageLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
 
     var backButton: SKShapeNode = SKShapeNode()
     var nextButton: SKShapeNode = SKShapeNode()
@@ -96,13 +99,13 @@ class GameScene: SKScene {
     }
     
     func setupScoreLabel() {
-        scoreLabel.zPosition = 100
-        scoreLabel.position = CGPoint(
+        pageLabel.zPosition = 100
+        pageLabel.position = CGPoint(
             x: playableRect!.midX,
             y: playableRect!.maxY + view!.frame.height/8 + 30)
-        scoreLabel.text = "Score: \(score)"
-        scoreLabel.name = "scoreLabel"
-        addChild(scoreLabel)
+        pageLabel.text = "Page: \(pagesNum)"
+        pageLabel.name = "scoreLabel"
+        addChild(pageLabel)
     }
     
     func addBackButton() {
@@ -138,8 +141,12 @@ class GameScene: SKScene {
         nextButton.position = CGPoint(
             x: playableRect!.maxX*3/4,
             y: view!.frame.height/16)
-        nextButton.fillColor = .orange
-        nextButton.strokeColor = .red
+        nextButton.fillColor = .lightGray
+        nextButton.strokeColor = .darkGray
+        if level.questions[pagesNum].isAnswered {
+            nextButton.fillColor = .orange
+            nextButton.strokeColor = .red
+        }
         nextButton.name = "next"
         addChild(nextButton)
         nextButton.addChild(nextLabel)
@@ -189,16 +196,25 @@ class GameScene: SKScene {
             recursiveQuiz()
         }
         
+        if nextButton.contains(touchPosition) {
+            if level.questions[pagesNum-1].isAnswered {
+                recursiveQuiz()
+            } else {
+                return
+            }
+        }
+        
         let touchLocation = touch.location(in: cropNode)
         
         switch node.name {
         case "right":
-            score += 10
             animiteAnswer(right: true, node: node, touchPosition: touchLocation)
         case "wrong":
             animiteAnswer(right: false, node: node, touchPosition: touchLocation)
         case "next":
-            run(SKAction.sequence([SKAction.wait(forDuration: 0.5), SKAction.run(recursiveQuiz)]))
+            level.questions[pagesNum-1].isAnswered = true
+            nextButton.fillColor = .orange
+            nextButton.strokeColor = .red
         default:
             return
         }
@@ -221,7 +237,6 @@ class GameScene: SKScene {
 
         quizNode.position.y += touchPosition.y - startPositionY
         startPositionY = 0
-        print("touch: \(touchPosition.y)")
         
         let upperLimit = max(0, quizNode.calculateAccumulatedFrame().height - playableArea!.frame.height)
         let yRange = SKRange(
@@ -236,21 +251,31 @@ class GameScene: SKScene {
     }
 
     func animiteAnswer(right: Bool, node: SKNode, touchPosition: CGPoint) {
-        scoreLabel.text = "Score: \(score)"
         let rect = CGRect(x: 0, y: 0, width: playableRect!.width, height: node.frame.height)
         let colorRect = SKShapeNode(rectOf: rect.size)
         colorRect.position = node.position
         colorRect.position.y = node.position.y + node.frame.height/2
         if right {
+            level.questions[pagesNum-1].isAnswered = true
+            nextButton.fillColor = .orange
+            nextButton.strokeColor = .red
             colorRect.strokeColor = .green
+            if pagesNum == level.questions.count {
+                let scene = GameOverScene(levelNum: levelId, size: self.size)
+                scene.scaleMode = scaleMode
+                let reveal = SKTransition.reveal(with: .left, duration: 0.5)
+                view?.presentScene(scene, transition: reveal)
+                lockLevels[levelId] = false
+            }
         } else {
             colorRect.strokeColor = .red
         }
         quizNode.addChild(colorRect)
-        let action = SKAction.run(recursiveQuiz)
-        colorRect.run(SKAction.sequence([
-            SKAction.wait(forDuration: 0.5),
-            SKAction.removeFromParent(), action]))
+        colorRect.run(SKAction.fadeOut(withDuration: 1.5))
+//        let action = SKAction.run(recursiveQuiz)
+//        colorRect.run(SKAction.sequence([
+//            SKAction.wait(forDuration: 0.5),
+//            SKAction.removeFromParent(), action]))
     }
     
     func recursiveQuiz() {
@@ -261,18 +286,18 @@ class GameScene: SKScene {
         nextButton.isHidden = pagesNum >= level.questions.count - 1
         previousButton.isHidden = pagesNum == 0
 
-        if pagesNum >= level.questions.count {
-            if levelId < lockLevels.count {
-                lockLevels[levelId] = false
-            }
-            run(SKAction.sequence([SKAction.wait(forDuration: 0.3),
-                                   SKAction.run { [unowned self] in
-                                    let scene = GameOverScene(score: self.score, size: self.size)
-                                    scene.scaleMode = self.scaleMode
-                                    let transition = SKTransition.crossFade(withDuration: 0.3)
-                                    self.view?.presentScene(scene, transition: transition)}
-                ]))
-        }
+//        if pagesNum >= level.questions.count {
+//            if levelId < lockLevels.count {
+//                lockLevels[levelId] = false
+//            }
+////            run(SKAction.sequence([SKAction.wait(forDuration: 0.3),
+////                                   SKAction.run { [unowned self] in
+//////                                    let scene = GameOverScene(score: self.score, size: self.size)
+////                                    scene.scaleMode = self.scaleMode
+////                                    let transition = SKTransition.crossFade(withDuration: 0.3)
+////                                    self.view?.presentScene(scene, transition: transition)}
+////                ]))
+//        }
         
         quizNode.removeAllChildren()
         
@@ -281,8 +306,13 @@ class GameScene: SKScene {
         }
         
         let quiz = level.questions[pagesNum]
-        
-        scoreLabel.isHidden = quiz.answers.count == 1
+        if quiz.isAnswered {
+            nextButton.fillColor = .orange
+            nextButton.strokeColor = .red
+        } else if !quiz.isAnswered {
+            nextButton.fillColor = .lightGray
+            nextButton.strokeColor = .darkGray
+        }
         
         // set question label
         questionLabel = SKLabelNode(text: quiz.question)
@@ -329,6 +359,7 @@ class GameScene: SKScene {
             
             answeredQuiz += 1
         }
-        pagesNum += 1
+            pagesNum += 1
+        
     }
 }

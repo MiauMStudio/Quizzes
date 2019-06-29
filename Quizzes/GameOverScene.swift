@@ -11,10 +11,10 @@ import SpriteKit
 
 class GameOverScene: SKScene {
     
-    let score: Int
+    let levelNum: Int
     
-    init(score: Int, size: CGSize) {
-        self.score = score
+    init(levelNum: Int, size: CGSize) {
+        self.levelNum = levelNum
         super.init(size: size)
     }
     
@@ -26,8 +26,8 @@ class GameOverScene: SKScene {
         
         backgroundColor = #colorLiteral(red: 0.9098039269, green: 0.4784313738, blue: 0.6431372762, alpha: 1)
         let gameOverLabel = SKLabelNode(text: """
-You got \(score) points!
-      Good job!
+You've completed level \(levelNum)!
+        Congratuations!
 """)
         gameOverLabel.numberOfLines = 0
         gameOverLabel.position = CGPoint(x: size.width/2, y: size.height/2)
