@@ -23,8 +23,6 @@ class GameScene: SKScene {
     var playableArea: SKSpriteNode?
     let cropNode: SKCropNode = SKCropNode()
     
-    var answeredQuestions: [Question] = []
-    
     var level: Level
     var levelId: Int
     
