@@ -34,7 +34,7 @@ class LevelsScene: SKScene {
         levelsNode.append(levelFiveNode)
         levelsNode.append(levelSixNode)
         
-        let yPosition = (levelsNode.first?.position.y)! - 150 + view.frame.height/2
+        let yPosition = (levelsNode.first?.position.y)! - 70 + view.frame.height/2
         camera?.position.y = yPosition
        
         for (index, isLocked) in lockLevels.enumerated() {
@@ -116,12 +116,15 @@ class LevelsScene: SKScene {
         messageLabel.verticalAlignmentMode = .center
         messageLabel.numberOfLines = 0
         messageLabel.fontSize = 30
-        messageLabel.position = camera!.position
+        messageLabel.position = .zero
         messageLabel.zPosition = 200
         messageLabel.lineBreakMode = .byWordWrapping
         messageLabel.preferredMaxLayoutWidth = (view?.frame.width)! - 40
-        addChild(messageLabel)
+        messageLabel.name = "messageLabel"
         
+        if camera!.childNode(withName: "messageLabel") == nil {
+            camera!.addChild(messageLabel)
+        }
         messageLabel.run(SKAction.sequence([
             SKAction.wait(forDuration: 2.0),
             SKAction.removeFromParent()]))
