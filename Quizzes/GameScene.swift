@@ -11,6 +11,7 @@ import GameplayKit
 
 class GameScene: SKScene {
     
+    var pagesNum: Int = 0
     var questionLabel: SKLabelNode?
     var answerLabels: [SKLabelNode] = []
     
@@ -28,13 +29,16 @@ class GameScene: SKScene {
     var scoreLabel = SKLabelNode(fontNamed: "AvenirNext-Bold")
 
     var backButton: SKShapeNode = SKShapeNode()
+    var nextButton: SKShapeNode = SKShapeNode()
+    var previousButton: SKShapeNode = SKShapeNode()
     
     let quizNode = SKNode()
     
     var startPositionY: CGFloat = 0
+    var yDistance: CGFloat = 0
+    var yPosition: CGFloat = 0
     
     init(size: CGSize, levelId: Int) {
-//        playableRect = CGRect(x: 20, y: (view?.frame.size.height)!/8 + 50, width: view!.frame.size.width - 40, height: view!.frame.size.height*3/4)
         
         self.levelId = levelId
         switch levelId {
@@ -66,8 +70,12 @@ class GameScene: SKScene {
         
         setupCropNode(view: view)
         setupScoreLabel()
-        recursiveQuiz()
+   
         addBackButton()
+        addNextButton()
+        addPreviousButton()
+        
+        recursiveQuiz()
     }
     
     func setupCropNode(view: SKView) {
@@ -83,10 +91,6 @@ class GameScene: SKScene {
         cropNode.maskNode = playableArea
         addChild(cropNode)
         cropNode.position = view.center
-        //
-        //        let bg = SKSpriteNode(imageNamed: "BG")
-        //        bg.zPosition = -1
-        //        cropNode.addChild(bg)
         quizNode.position = .zero
         cropNode.addChild(quizNode)
     }
@@ -103,8 +107,9 @@ class GameScene: SKScene {
     
     func addBackButton() {
         
-        let backLabel = SKLabelNode(text: "Back to main menu")
+        let backLabel = SKLabelNode(text: "Map")
         backLabel.verticalAlignmentMode = .center
+        backLabel.horizontalAlignmentMode = .center
         backLabel.name = "back"
         let cgSize = backLabel.frame.size
         backButton = SKShapeNode(rectOf: CGSize(
@@ -118,6 +123,47 @@ class GameScene: SKScene {
         backButton.name = "back"
         addChild(backButton)
         backButton.addChild(backLabel)
+    }
+    
+    func addNextButton() {
+        
+        let nextLabel = SKLabelNode(text: "→")
+        nextLabel.verticalAlignmentMode = .center
+        nextLabel.horizontalAlignmentMode = .center
+        nextLabel.name = "nextPage"
+        let cgSize = nextLabel.frame.size
+        nextButton = SKShapeNode(rectOf: CGSize(
+            width: cgSize.width + 15,
+            height: cgSize.height + 5), cornerRadius: 20)
+        nextButton.position = CGPoint(
+            x: playableRect!.maxX*3/4,
+            y: view!.frame.height/16)
+        nextButton.fillColor = .orange
+        nextButton.strokeColor = .red
+        nextButton.name = "next"
+        addChild(nextButton)
+        nextButton.addChild(nextLabel)
+        nextButton.isHidden = pagesNum >= level.questions.count - 1
+    }
+    
+    func addPreviousButton() {
+        
+        let previousLabel = SKLabelNode(text: "←")
+        previousLabel.verticalAlignmentMode = .center
+        previousLabel.horizontalAlignmentMode = .center
+        previousLabel.name = "previous"
+        let cgSize = previousLabel.frame.size
+        previousButton = SKShapeNode(rectOf: CGSize(
+            width: cgSize.width + 15,
+            height: cgSize.height + 5), cornerRadius: 20)
+        previousButton.position = CGPoint(
+            x: playableRect!.maxX/4, y: view!.frame.height/16)
+        previousButton.fillColor = .orange
+        previousButton.strokeColor = .red
+        previousButton.name = "previous"
+        addChild(previousButton)
+        previousButton.addChild(previousLabel)
+        previousButton.isHidden = pagesNum == 0
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -136,6 +182,13 @@ class GameScene: SKScene {
             }
         }
         
+        if previousButton.contains(touchPosition) {
+            
+            pagesNum -= 2
+            guard pagesNum >= 0 else { return }
+            recursiveQuiz()
+        }
+        
         let touchLocation = touch.location(in: cropNode)
         
         switch node.name {
@@ -144,12 +197,6 @@ class GameScene: SKScene {
             animiteAnswer(right: true, node: node, touchPosition: touchLocation)
         case "wrong":
             animiteAnswer(right: false, node: node, touchPosition: touchLocation)
-//        case "back":
-//            if let scene = SKScene(fileNamed: "LevelsScene") {
-//                let reveal = SKTransition.crossFade(withDuration: 0.3)
-//                view?.presentScene(scene, transition: reveal)
-//                print(questionLabel?.text)
-//            }
         case "next":
             run(SKAction.sequence([SKAction.wait(forDuration: 0.5), SKAction.run(recursiveQuiz)]))
         default:
@@ -158,27 +205,23 @@ class GameScene: SKScene {
     }
     
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        print(quizNode.calculateAccumulatedFrame().height)
+        
         guard let touch = touches.first else {
             return
         }
-        let touchPosition = touch.location(in: playableArea!)
+        let touchPosition = touch.location(in: cropNode)
         
-//        guard quizNode.position.y - quizNode.calculateAccumulatedFrame().height/2 < 30 else { return }
-//        guard quizNode.position.y + quizNode.calculateAccumulatedFrame().height/2 > 30 else {
-//            return
-        //        }
-        
-        guard (playableArea?.contains(touchPosition))! else { return }
-        
+        guard ((playableArea?.frame.contains(touchPosition))!) else { return }
+
         if startPositionY == 0 {
             startPositionY = touchPosition.y
         }
         
         guard startPositionY != touchPosition.y else { return }
-        let yDistance = touchPosition.y - startPositionY
-        
-        quizNode.position.y += yDistance
+
+        quizNode.position.y += touchPosition.y - startPositionY
+        startPositionY = 0
+        print("touch: \(touchPosition.y)")
         
         let upperLimit = max(0, quizNode.calculateAccumulatedFrame().height - playableArea!.frame.height)
         let yRange = SKRange(
@@ -191,7 +234,7 @@ class GameScene: SKScene {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         startPositionY = 0
     }
-    
+
     func animiteAnswer(right: Bool, node: SKNode, touchPosition: CGPoint) {
         scoreLabel.text = "Score: \(score)"
         let rect = CGRect(x: 0, y: 0, width: playableRect!.width, height: node.frame.height)
@@ -211,18 +254,14 @@ class GameScene: SKScene {
     }
     
     func recursiveQuiz() {
-//        print("playable area height: \(playableArea?.frame.height)")
-//        if quizNode.calculateAccumulatedFrame().height <= (playableArea?.frame.height)! {
-//            quizNode.position = CGPoint(x: 0,
-//                                        y: -(playableArea?.frame.height)!/2)
-//
-//        } else {
-//            quizNode.position.y = -quizNode.calculateAccumulatedFrame().height/2
-//        }
         
         quizNode.position = .zero
         
-        if level.questions.count == 0 {
+        // Hide the previous or next button at first or end page.
+        nextButton.isHidden = pagesNum >= level.questions.count - 1
+        previousButton.isHidden = pagesNum == 0
+
+        if pagesNum >= level.questions.count {
             if levelId < lockLevels.count {
                 lockLevels[levelId] = false
             }
@@ -237,13 +276,13 @@ class GameScene: SKScene {
         
         quizNode.removeAllChildren()
         
-        guard level.questions.count > 0 else { return }
+        guard pagesNum < level.questions.count else {
+            return
+        }
         
-        let quiz = level.questions.removeFirst()
+        let quiz = level.questions[pagesNum]
         
-        if quiz.answers.count == 1 {
-            scoreLabel.isHidden = true
-        } else { scoreLabel.isHidden = false }
+        scoreLabel.isHidden = quiz.answers.count == 1
         
         // set question label
         questionLabel = SKLabelNode(text: quiz.question)
@@ -258,12 +297,12 @@ class GameScene: SKScene {
         quizNode.addChild(questionLabel!)
         // set answer labels
         let count = quiz.answers.count
-        
+        var answers = quiz.answers
         for i in 1...count {
-            let answer: String = quiz.answers.randomElement()!
+            let answer: String = answers.randomElement()!
             
-            let index = quiz.answers.firstIndex(of: answer)
-            quiz.answers.remove(at: index!)
+            let index = answers.firstIndex(of: answer)
+            answers.remove(at: index!)
             
             let answerLabel = SKLabelNode(text: answer)
             answerLabel.position = CGPoint(
@@ -290,6 +329,6 @@ class GameScene: SKScene {
             
             answeredQuiz += 1
         }
-        
+        pagesNum += 1
     }
 }
