@@ -9,7 +9,12 @@
 import Foundation
 import SpriteKit
 
-var lockLevels: [Bool] = [false, true, true, true, true, true]
+var lockLevels: [Bool] = [false, true, true, true, true, true] {
+    willSet {
+        print(lockLevels)
+        UserDefaults.standard.set(newValue, forKey: "lockLevels")
+    }
+}
 
 class LevelsScene: SKScene {
     
@@ -18,6 +23,8 @@ class LevelsScene: SKScene {
     
     override func didMove(to view: SKView) {
         
+        lockLevels = UserDefaults.standard.array(forKey: "lockLevels") as? [Bool] ?? [false, true, true, true, true, true]
+            
         backgroundColor = #colorLiteral(red: 0.9285206199, green: 0.6720158458, blue: 0.7007293105, alpha: 1)
         
         let levelOneNode = childNode(withName: "levelOne") as! SKSpriteNode

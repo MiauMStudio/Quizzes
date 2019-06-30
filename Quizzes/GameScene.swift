@@ -204,6 +204,8 @@ class GameScene: SKScene {
         
         let touchLocation = touch.location(in: cropNode)
         
+        guard touchPosition.y > 0 else { return }
+        
         switch node.name {
         case "right":
             animiteAnswer(right: true, node: node, touchPosition: touchLocation)
@@ -263,7 +265,9 @@ class GameScene: SKScene {
                 scene.scaleMode = scaleMode
                 let reveal = SKTransition.reveal(with: .left, duration: 0.5)
                 view?.presentScene(scene, transition: reveal)
-                lockLevels[levelId] = false
+                if levelId < lockLevels.count {
+                    lockLevels[levelId] = false
+                }
             }
         } else {
             colorRect.strokeColor = .red

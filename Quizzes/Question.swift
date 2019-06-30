@@ -21,7 +21,7 @@ class Question: Hashable {
     var question: String
     var answers: Set<String>
     var rigntAnswer: String?
-    var isAnswered = false
+    var isAnswered = false 
     
     init(question: String, answers: Set<String>, rightAnswer: String? = nil) {
         self.question = question
