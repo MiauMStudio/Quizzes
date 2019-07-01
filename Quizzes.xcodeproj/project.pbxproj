@@ -11,6 +11,7 @@
 		469836E522B716F200CF52BE /* Level5.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469836E422B716F200CF52BE /* Level5.swift */; };
 		469836E722B7176000CF52BE /* Level6.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469836E622B7176000CF52BE /* Level6.swift */; };
 		469E304122B6AD150007D3EA /* Level3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 469E304022B6AD150007D3EA /* Level3.swift */; };
+		46A7611E22CA897700A217C6 /* CatScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 46A7611D22CA897700A217C6 /* CatScene.sks */; };
 		46B158E022B2E96F00B5A42F /* Level2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B158DF22B2E96F00B5A42F /* Level2.swift */; };
 		46B158E422B2F7A200B5A42F /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B158E322B2F7A200B5A42F /* GameOverScene.swift */; };
 		46B6326B22C9B7DA00065091 /* CatScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 46B6326A22C9B7DA00065091 /* CatScene.swift */; };
@@ -31,6 +32,7 @@
 		469836E422B716F200CF52BE /* Level5.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level5.swift; sourceTree = "<group>"; };
 		469836E622B7176000CF52BE /* Level6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level6.swift; sourceTree = "<group>"; };
 		469E304022B6AD150007D3EA /* Level3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level3.swift; sourceTree = "<group>"; };
+		46A7611D22CA897700A217C6 /* CatScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = CatScene.sks; sourceTree = "<group>"; };
 		46B158DF22B2E96F00B5A42F /* Level2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Level2.swift; sourceTree = "<group>"; };
 		46B158E322B2F7A200B5A42F /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		46B6326A22C9B7DA00065091 /* CatScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatScene.swift; sourceTree = "<group>"; };
@@ -80,8 +82,9 @@
 			children = (
 				46D5666E22B185AC001A615D /* AppDelegate.swift */,
 				46D5667622B185AC001A615D /* GameViewController.swift */,
-				46B94AFB22B2A74600112CE8 /* LevelsScene.sks */,
+				46A7611D22CA897700A217C6 /* CatScene.sks */,
 				46B6326A22C9B7DA00065091 /* CatScene.swift */,
+				46B94AFB22B2A74600112CE8 /* LevelsScene.sks */,
 				46B94AFD22B2A77100112CE8 /* LevelsScene.swift */,
 				46D5667422B185AC001A615D /* GameScene.swift */,
 				46B158E322B2F7A200B5A42F /* GameOverScene.swift */,
@@ -169,6 +172,7 @@
 				46D5667A22B185AC001A615D /* Main.storyboard in Resources */,
 				46D5667C22B185AD001A615D /* Assets.xcassets in Resources */,
 				46D5667F22B185AD001A615D /* LaunchScreen.storyboard in Resources */,
+				46A7611E22CA897700A217C6 /* CatScene.sks in Resources */,
 				46B94AFC22B2A74600112CE8 /* LevelsScene.sks in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -348,7 +352,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.miaumstudio.advanture;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -366,7 +370,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.miaumstudio.advanture;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
