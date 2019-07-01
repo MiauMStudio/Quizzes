@@ -21,9 +21,8 @@
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BG" translatesAutoresizingMaskIntoConstraints="NO" id="02s-nh-1yx">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FY7-Xr-7ns">
-                                <rect key="frame" x="61" y="289" width="290" height="237"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FY7-Xr-7ns">
+                                <rect key="frame" x="57" y="393.5" width="300" height="109.5"/>
                                 <attributedString key="attributedText">
                                     <fragment content="Jelly Adventure">
                                         <attributes>
@@ -40,9 +39,11 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="FY7-Xr-7ns" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="221-kh-sdq"/>
                             <constraint firstItem="02s-nh-1yx" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Oxw-8X-quk"/>
                             <constraint firstItem="02s-nh-1yx" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="k5i-qH-ezo"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="02s-nh-1yx" secondAttribute="trailing" id="oKn-yE-1h4"/>
+                            <constraint firstItem="FY7-Xr-7ns" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="centerY" id="oS5-Lo-vzI"/>
                             <constraint firstItem="02s-nh-1yx" firstAttribute="bottom" secondItem="Ze5-6b-2t3" secondAttribute="bottom" id="ogA-Db-6oj"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
