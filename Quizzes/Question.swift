@@ -20,9 +20,10 @@ class Question: Hashable {
     
     var question: String
     var answers: Set<String>
-    var rigntAnswer: String
+    var rigntAnswer: String?
+    var isAnswered = false 
     
-    init(question: String, answers: Set<String>, rightAnswer: String) {
+    init(question: String, answers: Set<String>, rightAnswer: String? = nil) {
         self.question = question
         self.answers = answers
         self.rigntAnswer = rightAnswer
