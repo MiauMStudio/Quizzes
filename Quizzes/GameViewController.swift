@@ -16,19 +16,28 @@ class GameViewController: UIViewController {
         super.viewDidLoad()
         
         if let view = self.view as! SKView? {
-            // Load the SKScene from 'GameScene.sks'
-            if let scene = SKScene(fileNamed: "CatScene") {
-                // Set the scale mode to scale to fit the window
-                scene.scaleMode = .resizeFill
-                
-                // Present the scene
-                view.presentScene(scene)
+            
+            let haveReadIntroduction = UserDefaults.standard.integer(forKey: "endIntroduction")
+            if haveReadIntroduction == 1 {
+                if let scene = SKScene(fileNamed: "LevelsScene") {
+                    scene.scaleMode = .resizeFill
+                    view.presentScene(scene)
+                }
             }
-            
-            view.ignoresSiblingOrder = true
-            
-            view.showsFPS = true
-            view.showsNodeCount = true
+            else {
+                if let scene = SKScene(fileNamed: "CatScene") {
+                    // Set the scale mode to scale to fit the window
+                    scene.scaleMode = .resizeFill
+                    
+                    // Present the scene
+                    view.presentScene(scene)
+                }
+                
+                view.ignoresSiblingOrder = true
+                
+                view.showsFPS = true
+                view.showsNodeCount = true
+            }
         }
     }
 

@@ -145,5 +145,7 @@ class CatScene: SKScene {
             let reveal = SKTransition.doorsOpenHorizontal(withDuration: 0.5)
             view?.presentScene(scene, transition: reveal)
         }
+        UserDefaults.standard.set(1, forKey: "endIntroduction")
     }
+    
 }
