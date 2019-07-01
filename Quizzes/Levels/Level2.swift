@@ -12,6 +12,7 @@ struct Level2: Level {
     //static var isLocked: Bool = true
     
     var questions: [Question] = []
+    let id = 2
     
     init() {
         let question1 = "99 + 1 = ?"
@@ -30,5 +31,9 @@ struct Level2: Level {
         let quiz2 = Question(question: question2, answers: [answer2_1, answer2_2, answer2_3], rightAnswer: answer2_3)
         
         questions.append(quiz2)
+        
+        for i in 1...questions.count {
+            questions[i-1].isAnswered = UserDefaults.standard.bool(forKey: "level 2 question \(i) is answered") ?? false
+        }
     }
 }

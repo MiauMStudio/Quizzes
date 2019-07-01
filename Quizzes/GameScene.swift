@@ -212,7 +212,9 @@ class GameScene: SKScene {
         case "wrong":
             animiteAnswer(right: false, node: node, touchPosition: touchLocation)
         case "next":
-            level.questions[pagesNum-1].isAnswered = true
+            let quiz = level.questions[pagesNum-1]
+            quiz.isAnswered = true
+            saveData(quiz: quiz)
             nextButton.fillColor = .orange
             nextButton.strokeColor = .red
         default:
@@ -256,7 +258,9 @@ class GameScene: SKScene {
         colorRect.position = node.position
         colorRect.position.y = node.position.y + node.frame.height/2
         if right {
-            level.questions[pagesNum-1].isAnswered = true
+            let quiz = level.questions[pagesNum-1]
+            quiz.isAnswered = true
+            saveData(quiz: quiz)
             nextButton.fillColor = .orange
             nextButton.strokeColor = .red
             colorRect.strokeColor = .green
@@ -362,6 +366,13 @@ class GameScene: SKScene {
             answeredQuiz += 1
         }
             pagesNum += 1
-        
+    }
+    
+    func saveData(quiz: Question) {
+        let prefixId: String = "level \(level.id) "
+        guard let quizIndex = level.questions.firstIndex(of: quiz) else { return }
+        let middleId = "question \(quizIndex + 1) "
+        let quizAnswered = prefixId + middleId + "is answered"
+        UserDefaults.standard.set(quiz.isAnswered, forKey: quizAnswered)
     }
 }

@@ -11,12 +11,14 @@ import Foundation
 protocol Level {
     //static var isLocked: Bool { get set }
     var questions: [Question] { get set }
+    var id: Int { get }
 }
 
 struct Level1: Level {
     //static var isLocked: Bool = false
     
     var questions: [Question] = []
+    let id = 1
     
     init() {
         let question1 = "模拟教学内容"
@@ -44,5 +46,9 @@ struct Level1: Level {
         let quiz3 = Question(question: question3, answers: [answer3_1, answer3_2, answer3_3, answer3_4], rightAnswer: answer3_2)
         
         questions.append(quiz3)
+        
+        for i in 1...questions.count {
+            questions[i-1].isAnswered = UserDefaults.standard.bool(forKey: "level 1 question \(i) is answered") ?? false
+        }
     }
 }
