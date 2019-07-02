@@ -208,9 +208,11 @@ class GameScene: SKScene {
         
         switch node.name {
         case "right":
-            animiteAnswer(right: true, node: node, touchPosition: touchLocation)
+//            animiteAnswer(right: true, node: node, touchPosition: touchLocation)
+            rightAnswer(touchPosition: touchPosition, node: node)
         case "wrong":
             animiteAnswer(right: false, node: node, touchPosition: touchLocation)
+            wrongAnswer()
         case "next":
             let quiz = level.questions[pagesNum-1]
             quiz.isAnswered = true
@@ -277,11 +279,10 @@ class GameScene: SKScene {
             colorRect.strokeColor = .red
         }
         quizNode.addChild(colorRect)
-        colorRect.run(SKAction.fadeOut(withDuration: 1.5))
-//        let action = SKAction.run(recursiveQuiz)
-//        colorRect.run(SKAction.sequence([
-//            SKAction.wait(forDuration: 0.5),
-//            SKAction.removeFromParent(), action]))
+        
+        colorRect.run(SKAction.sequence([
+            SKAction.fadeOut(withDuration: 1.5),
+            SKAction.removeFromParent()]))
     }
     
     func recursiveQuiz() {
@@ -291,19 +292,6 @@ class GameScene: SKScene {
         // Hide the previous or next button at first or end page.
         nextButton.isHidden = pagesNum >= level.questions.count - 1
         previousButton.isHidden = pagesNum == 0
-
-//        if pagesNum >= level.questions.count {
-//            if levelId < lockLevels.count {
-//                lockLevels[levelId] = false
-//            }
-////            run(SKAction.sequence([SKAction.wait(forDuration: 0.3),
-////                                   SKAction.run { [unowned self] in
-//////                                    let scene = GameOverScene(score: self.score, size: self.size)
-////                                    scene.scaleMode = self.scaleMode
-////                                    let transition = SKTransition.crossFade(withDuration: 0.3)
-////                                    self.view?.presentScene(scene, transition: transition)}
-////                ]))
-//        }
         
         quizNode.removeAllChildren()
         
@@ -329,6 +317,7 @@ class GameScene: SKScene {
         questionLabel?.numberOfLines = 0
         questionLabel?.lineBreakMode = .byWordWrapping
         questionLabel?.preferredMaxLayoutWidth = playableArea!.frame.width
+        questionLabel?.fontSize = 22
         
         quizNode.addChild(questionLabel!)
         // set answer labels
@@ -374,5 +363,44 @@ class GameScene: SKScene {
         let middleId = "question \(quizIndex + 1) "
         let quizAnswered = prefixId + middleId + "is answered"
         UserDefaults.standard.set(quiz.isAnswered, forKey: quizAnswered)
+    }
+    
+    func wrongAnswer() {
+        let alert = UIAlertController(title: "答错了😔", message: "不好意思，你回答错了，请回到上一页复习一下基础知识吧。", preferredStyle: UIAlertController.Style.actionSheet)
+        alert.addAction(UIAlertAction(title: "好吧。。。", style: .default, handler: nil))
+        self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
+    }
+    func rightAnswer(touchPosition: CGPoint, node: SKNode) {
+        let rect = CGRect(x: 0, y: 0, width: playableRect!.width, height: node.frame.height)
+        let colorRect = SKShapeNode(rectOf: rect.size)
+        colorRect.position = node.position
+        colorRect.position.y = node.position.y + node.frame.height/2
+        nextButton.fillColor = .orange
+        nextButton.strokeColor = .red
+        colorRect.strokeColor = .green
+        quizNode.addChild(colorRect)
+        
+        colorRect.run(SKAction.sequence([
+            SKAction.fadeOut(withDuration: 1.5),
+            SKAction.removeFromParent()]))
+        
+        let alert = UIAlertController(title: "答对了😊", message: "恭喜你，回答正确！请进入下一关吧！", preferredStyle: UIAlertController.Style.actionSheet)
+        alert.addAction(UIAlertAction(title: "没问题！😉", style: .default, handler: { [unowned self] action in
+            print("hello")
+            let quiz = self.level.questions[self.pagesNum-1]
+            quiz.isAnswered = true
+            self.saveData(quiz: quiz)
+            if self.pagesNum == self.level.questions.count {
+                let scene = GameOverScene(levelNum: self.levelId, size: self.size)
+                scene.scaleMode = self.scaleMode
+                let reveal = SKTransition.reveal(with: .left, duration: 0.5)
+                self.view?.presentScene(scene, transition: reveal)
+                if self.levelId < lockLevels.count {
+                    lockLevels[self.levelId] = false
+                }
+            }
+            
+        }))
+        self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
 }

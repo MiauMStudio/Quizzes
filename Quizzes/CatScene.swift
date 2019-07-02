@@ -69,7 +69,7 @@ class CatScene: SKScene {
         dialog?.lineBreakMode = .byWordWrapping
         dialog?.fontSize = 18
         dialog?.fontColor = .purple
-        dialog?.text = "小白：我是小白，我在python森林里迷路了。树精爷爷，您能告诉我森林出口在哪里吗？"
+        dialog?.text = "小白：\n我是小白，我在python森林里迷路了。树精爷爷，您能告诉我森林出口在哪里吗？"
         
         page += 1
     }
@@ -77,19 +77,19 @@ class CatScene: SKScene {
     func secondPage() {
         white?.alpha = 0.5
         orange?.alpha = 1
-        dialog?.text = "树精：孩子，抱歉，我只是个守林人，我从没有踏入过森林深处。不过，森林里居住着许多python果冻，它们会告诉你正确的路。"
+        dialog?.text = "树精：\n孩子，抱歉，我只是个守林人，我从没有踏入过森林深处。不过，森林里居住着许多python果冻，它们会告诉你正确的路。"
         page += 1
     }
     
     func thirdPage() {
-        dialog?.text = "树精：要想得到它们的指引，你需要回答出它们的问题。通常，像它们的名字一样，它们会问你python知识。"
+        dialog?.text = "树精：\n要想得到它们的指引，你需要回答出它们的问题。通常，像它们的名字一样，它们会问你python知识。"
         page += 1
     }
     
     func fourthPage() {
         white?.alpha = 1
         orange?.alpha = 0.5
-        dialog?.text = "小白：谢谢树精爷爷，可是，我完全不懂python啊。"
+        dialog?.text = "小白：\n谢谢树精爷爷，可是，我完全不懂python啊。"
         page += 1
     }
     func fifthPage() {
@@ -100,14 +100,14 @@ class CatScene: SKScene {
         orange?.yScale = 0.031
         orange?.color = .orange
         orange?.colorBlendFactor = 1
-        dialog?.text = "小橘：你好，我是小橘,我很乐意教你python知识，但是果冻们只接受你自己来回答问题。"
+        dialog?.text = "小橘：\n你好，我是小橘,我很乐意教你python知识，但是果冻们只接受你自己来回答问题。"
         page += 1
     }
     
     func sixthPage() {
         white?.alpha = 1
         orange?.alpha = 0.5
-        dialog?.text = "小白：真的吗？太感谢你们了！"
+        dialog?.text = "小白：\n真的吗？太感谢你们了！"
         page += 1
     }
     
@@ -118,12 +118,12 @@ class CatScene: SKScene {
         orange?.yScale = 0.025
         orange?.alpha = 1
         orange?.texture = SKTexture(imageNamed: "treeSprite")
-        dialog?.text = "树精：当你解不出难题时，可以来问我，这些小果冻们还是很给老头儿面子的。"
+        dialog?.text = "树精：\n当你解不出难题时，可以来问我，这些小果冻们还是很给老头儿面子的。"
         page += 1
     }
     
     func eighthPage() {
-        dialog?.text = "树精：顺着这条路往前走，便能到达金色果冻的家。勇敢地去吧，我的孩子。"
+        dialog?.text = "树精：\n顺着这条路往前走，便能到达金色果冻的家。勇敢地去吧，我的孩子。"
         page += 1
     }
     
@@ -135,7 +135,7 @@ class CatScene: SKScene {
         orange?.yScale = 0.031
         orange?.color = .orange
         orange?.colorBlendFactor = 1
-        dialog?.text = "小白，小橘：爷爷再见，我们马上出发了！"
+        dialog?.text = "小白，小橘：\n爷爷再见，我们马上出发了！"
         page += 1
     }
     
