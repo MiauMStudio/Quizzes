@@ -39,6 +39,8 @@ class GameScene: SKScene {
     var yDistance: CGFloat = 0
     var yPosition: CGFloat = 0
     
+    var labelFrame = SKShapeNode()
+    
     init(size: CGSize, levelId: Int) {
         
         self.levelId = levelId
@@ -216,6 +218,14 @@ class GameScene: SKScene {
         case "next":
             let quiz = level.questions[pagesNum-1]
             quiz.isAnswered = true
+            let colorRectAnimation = SKAction.run { [unowned self] in
+                self.labelFrame.strokeColor = .green
+            }
+            let backColor = SKAction.run { [unowned self] in
+                self.labelFrame.strokeColor = .white
+            }
+            
+            run(SKAction.sequence([colorRectAnimation, SKAction.wait(forDuration: 0.5), backColor]))
             saveData(quiz: quiz)
             nextButton.fillColor = .orange
             nextButton.strokeColor = .red
@@ -259,25 +269,8 @@ class GameScene: SKScene {
         let colorRect = SKShapeNode(rectOf: rect.size)
         colorRect.position = node.position
         colorRect.position.y = node.position.y + node.frame.height/2
-        if right {
-            let quiz = level.questions[pagesNum-1]
-            quiz.isAnswered = true
-            saveData(quiz: quiz)
-            nextButton.fillColor = .orange
-            nextButton.strokeColor = .red
-            colorRect.strokeColor = .green
-            if pagesNum == level.questions.count {
-                let scene = GameOverScene(levelNum: levelId, size: self.size)
-                scene.scaleMode = scaleMode
-                let reveal = SKTransition.reveal(with: .left, duration: 0.5)
-                view?.presentScene(scene, transition: reveal)
-                if levelId < lockLevels.count {
-                    lockLevels[levelId] = false
-                }
-            }
-        } else {
-            colorRect.strokeColor = .red
-        }
+        colorRect.strokeColor = .red
+        
         quizNode.addChild(colorRect)
         
         colorRect.run(SKAction.sequence([
@@ -341,10 +334,10 @@ class GameScene: SKScene {
             } else if quiz.rigntAnswer != nil {
                 answerLabel.name = "wrong"
             } else if quiz.rigntAnswer == nil {
-                let labelFrame = SKShapeNode(rectOf: CGSize(
+                labelFrame = SKShapeNode(rectOf: CGSize(
                     width: answerLabel.frame.width + 20,
                     height: answerLabel.frame.height + 10), cornerRadius: 15)
-                labelFrame.strokeColor = .green
+                //labelFrame.strokeColor = .green
                 labelFrame.lineWidth = 3
                 labelFrame.position = .zero
                 labelFrame.position.y = answerLabel.frame.height/2
@@ -366,7 +359,7 @@ class GameScene: SKScene {
     }
     
     func wrongAnswer() {
-        let alert = UIAlertController(title: "答错了😔", message: "不好意思，你回答错了，请回到上一页复习一下基础知识吧。", preferredStyle: UIAlertController.Style.actionSheet)
+        let alert = UIAlertController(title: "答错了😔", message: "不好意思，你回答错了，请回到上一页复习一下基础知识吧。", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "好吧。。。", style: .default, handler: nil))
         self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
     }
@@ -375,8 +368,7 @@ class GameScene: SKScene {
         let colorRect = SKShapeNode(rectOf: rect.size)
         colorRect.position = node.position
         colorRect.position.y = node.position.y + node.frame.height/2
-        nextButton.fillColor = .orange
-        nextButton.strokeColor = .red
+
         colorRect.strokeColor = .green
         quizNode.addChild(colorRect)
         
@@ -384,11 +376,12 @@ class GameScene: SKScene {
             SKAction.fadeOut(withDuration: 1.5),
             SKAction.removeFromParent()]))
         
-        let alert = UIAlertController(title: "答对了😊", message: "恭喜你，回答正确！请进入下一关吧！", preferredStyle: UIAlertController.Style.actionSheet)
+        let alert = UIAlertController(title: "答对了😊", message: "恭喜你，回答正确！请进入下一关吧！", preferredStyle: UIAlertController.Style.alert)
         alert.addAction(UIAlertAction(title: "没问题！😉", style: .default, handler: { [unowned self] action in
-            print("hello")
             let quiz = self.level.questions[self.pagesNum-1]
             quiz.isAnswered = true
+            self.nextButton.strokeColor = .red
+            self.nextButton.fillColor = .orange
             self.saveData(quiz: quiz)
             if self.pagesNum == self.level.questions.count {
                 let scene = GameOverScene(levelNum: self.levelId, size: self.size)
